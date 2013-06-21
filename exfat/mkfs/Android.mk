@@ -10,12 +10,9 @@ LOCAL_SRC_FILES =  cbm.c fat.c main.c mkexfat.c rootdir.c uct.c uctc.c vbr.c
 LOCAL_C_INCLUDES += $(LOCAL_PATH) \
 					bootable/recovery/exfat/libexfat \
 					bootable/recovery/fuse/include
-LOCAL_SHARED_LIBRARIES += libz libc libexfat libdl 
-LOCAL_STATIC_LIBRARIES += libfuse
+LOCAL_STATIC_LIBRARIES += libz libc libexfat libfuse
+
+LOCAL_MODULE_CLASS := RECOVERY_EXECUTABLES
+LOCAL_FORCE_STATIC_EXECUTABLE := true
 
 include $(BUILD_EXECUTABLE)
-
-# We need this so that the installed files could be picked up based on the
-# local module name
-ALL_MODULES.$(LOCAL_MODULE).INSTALLED := \
-    $(ALL_MODULES.$(LOCAL_MODULE).INSTALLED) $(SYMLINKS)

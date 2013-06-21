@@ -51,6 +51,12 @@
 
 #define NODE_TABLE_MIN_SIZE 8192
 
+#if defined(__ANDROID__)
+void *dlopen(const char *filename, int flag) { return 0; }
+const char *dlerror(void) { return 0; }
+int dlclose(void *handle) { return 0; }
+#endif
+
 struct fuse_config {
 	unsigned int uid;
 	unsigned int gid;
@@ -4579,7 +4585,11 @@ void fuse_stop_cleanup_thread(struct fuse *f)
 {
 	if (lru_enabled(f)) {
 		pthread_mutex_lock(&f->lock);
+#if defined(__ANDROID__)
+		pthread_kill(f->prune_thread, SIGUSR1);
+#else
 		pthread_cancel(f->prune_thread);
+#endif
 		pthread_mutex_unlock(&f->lock);
 		pthread_join(f->prune_thread, NULL);
 	}
