@@ -365,4 +365,9 @@ include $(commands_recovery_local_path)/su/Android.mk
 include $(commands_recovery_local_path)/pigz/Android.mk
 include $(commands_recovery_local_path)/fb2png/Android.mk
 include $(commands_recovery_local_path)/device_images/Android.mk
+ifneq ($(DEVICE_HAS_NO_EXFAT), true)
+	include $(commands_recovery_local_path)/exfat/exfat-fuse/Android.mk \
+		$(commands_recovery_local_path)/fuse/Android.mk \
+		$(commands_recovery_local_path)/exfat/libexfat/Android.mk
+endif
 commands_recovery_local_path :=
